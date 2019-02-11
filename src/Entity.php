@@ -26,7 +26,7 @@ class Entity
      * @return $this
      * @throws TypeMismatchException
      */
-    public function parse($data) : Entity
+    protected function parse($data) : Entity
     {
 
         $props = $this->_class->getProperties(\ReflectionProperty::IS_PUBLIC);
@@ -74,9 +74,18 @@ class Entity
         return $this;
     }
 
-    public function generate($data)
+    public function generate($entities)
     {
-        return $this->parse($data);
+        if (!$this->isAssoc($entities)) {
+            $data = [];
+            foreach ($entities as $entity) {
+                $data[] = (new static())->parse($entity);
+            }
+
+            return $data;
+        }
+
+        return $this->parse($entities);
     }
 
     protected function toCamelCase(string $string) : string
