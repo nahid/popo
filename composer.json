@@ -1,0 +1,25 @@
+{
+    "name": "nahid/popo",
+    "description": "Plain Old PHP Object for various data",
+    "type": "library",
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nahid Bin Azhar",
+            "email": "nahid.dns@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Nahid\\Popo\\": "src/"
+        },
+        "files": []
+    },
+    "minimum-stability": "dev",
+    "require-dev": {
+        "symfony/var-dumper": "^4.3@dev"
+    }
+}
