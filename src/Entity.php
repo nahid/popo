@@ -15,7 +15,9 @@ class Entity
     public function __construct($data = [])
     {
         $this->_class = new \ReflectionClass($this);
-        $this->parse($data);
+        if (count($data) > 0) {
+            $this->parse($data);
+        }
 
     }
 
@@ -26,6 +28,7 @@ class Entity
      */
     public function parse($data) : Entity
     {
+
         $props = $this->_class->getProperties(\ReflectionProperty::IS_PUBLIC);
         foreach ($props as $prop) {
             $type = $prop->getValue($this);
@@ -49,11 +52,13 @@ class Entity
                     if (!$typeInstance->is($value)) {
                         throw new TypeMismatchException();
                     }
+
+                    //$value = $typeInstance->generate($value);
                 }
 
                 if ($obj->isSubclassOf(Entity::class)) {
                     if (!is_null($value)) {
-                        $value = new $type($value);
+                        $value = (new $type())->generate($value);
                     }
                 }
 
@@ -67,6 +72,11 @@ class Entity
         }
 
         return $this;
+    }
+
+    public function generate($data)
+    {
+        return $this->parse($data);
     }
 
     protected function toCamelCase(string $string) : string
@@ -95,5 +105,12 @@ class Entity
         }
         return implode('_', $ret);
     }
+
+    protected function isAssoc(array $arr)
+    {
+        if (array() === $arr) return false;
+        return array_keys($arr) !== range(0, count($arr) - 1);
+    }
+
 
 }

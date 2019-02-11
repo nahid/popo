@@ -9,7 +9,7 @@ abstract class Type
 
     abstract public function is($var) : bool ;
 
-    public function getDefault() : mixed
+    public function getDefault()
     {
         return $this->default;
     }
