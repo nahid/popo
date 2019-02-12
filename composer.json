@@ -16,7 +16,9 @@
         "psr-4": {
             "Nahid\\Popo\\": "src/"
         },
-        "files": []
+        "files": [
+            "helpers/popo.php"
+        ]
     },
     "minimum-stability": "dev",
     "require-dev": {
