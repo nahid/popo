@@ -9,6 +9,12 @@ class Collection extends Type
 
     public function is($var) : bool
     {
-        return is_array($var);
+        return $this->isCollection($var);
+    }
+
+    private function isCollection(array $arr) : bool
+    {
+        if (array() === $arr) return false;
+        return array_keys($arr) !== range(0, count($arr) - 1);
     }
 }

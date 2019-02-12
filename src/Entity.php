@@ -16,7 +16,7 @@ class Entity
     {
         $this->_class = new \ReflectionClass($this);
         if (count($data) > 0) {
-            $this->parse($data);
+            $this->generate($this->parse($data));
         }
 
     }
@@ -32,7 +32,8 @@ class Entity
         $props = $this->_class->getProperties(\ReflectionProperty::IS_PUBLIC);
         foreach ($props as $prop) {
             $type = $prop->getValue($this);
-            $key = $this->toUnserscore($prop->getName());
+            $name = $prop->getName();
+            $key = $this->toUnserscore($name);
             $value = $data[$key] ?? null;
 
             if (class_exists($type)) {
@@ -50,7 +51,13 @@ class Entity
                     }
 
                     if (!$typeInstance->is($value)) {
-                        throw new TypeMismatchException();
+                        throw new TypeMismatchException(vsprintf("Type mismatch exception! %s required is type %s.", [$key, $typeInstance]));
+                    }
+
+                    $method = 'change' . ucfirst($name);
+
+                    if (method_exists($this, $method)) {
+                        $value = call_user_func_array([$this, $method], [$value]);
                     }
 
                     //$value = $typeInstance->generate($value);
@@ -115,9 +122,11 @@ class Entity
         return implode('_', $ret);
     }
 
-    protected function isAssoc(array $arr)
+    protected function isAssoc($arr) : bool
     {
+        if (!is_array($arr)) return false;
         if (array() === $arr) return false;
+
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
 
