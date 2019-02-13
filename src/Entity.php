@@ -73,10 +73,11 @@ class Entity
 
                 unset($obj);
                 unset($typeInstance);
-                unset($this->_class);
 
             }
         }
+
+        unset($this->_class);
 
         return $this;
     }
