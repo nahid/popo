@@ -33,7 +33,7 @@ class Entity
         foreach ($props as $prop) {
             $type = $prop->getValue($this);
             $name = $prop->getName();
-            $key = $this->toUnserscore($name);
+            $key = $this->toUnderscore($name);
             $value = $data[$key] ?? null;
 
             if (class_exists($type)) {
@@ -113,7 +113,7 @@ class Entity
         return $camelCase;
     }
 
-    protected function toUnserscore(string $string) : string
+    protected function toUnderscore(string $string) : string
     {
         preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $string, $matches);
         $ret = $matches[0];
