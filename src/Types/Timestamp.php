@@ -24,14 +24,14 @@ class Timestamp extends Type
     /**
      * check this value is a valid timestamp
      *
-     * @param        $str_dt
-     * @param string $str_dateformat
-     * @param string $str_timezone
+     * @param        $dateTime
+     * @param string $format
+     * @param string $timezone
      * @return bool
      */
-    private function isValidDateTime($str_dt, $str_dateformat = 'Y-m-d h:i:s', $str_timezone = 'UTC') : bool
+    private function isValidDateTime(string $dateTime, string $format = 'Y-m-d h:i:s', string $timezone = 'UTC') : bool
     {
-        $date = DateTime::createFromFormat($str_dateformat, $str_dt, new DateTimeZone($str_timezone));
+        $date = DateTime::createFromFormat($format, $dateTime, new DateTimeZone($timezone));
         return $date && DateTime::getLastErrors()["warning_count"] == 0 && DateTime::getLastErrors()["error_count"] == 0;
     }
 }
