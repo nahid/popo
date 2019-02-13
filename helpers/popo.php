@@ -14,9 +14,12 @@ if (!function_exists('popo_json_parse')) {
 
         $json_array = json_decode($json, true);
 
-        $entity_obj = new $entity($json_array);
+        /**
+         * @var Entity $entity_obj
+         */
+        $entity_obj = new $entity();
 
-        return $entity_obj;
+        return $entity_obj->generate($json_array);
     }
 }
 
