@@ -28,7 +28,7 @@ class Entity
      * @return $this
      * @throws TypeMismatchException
      */
-    protected function parse($data) : Entity
+    public function parse($data) : Entity
     {
 
         $props = $this->_class->getProperties(\ReflectionProperty::IS_PUBLIC);
@@ -66,6 +66,10 @@ class Entity
                 }
 
                 if ($obj->isSubclassOf(Entity::class)) {
+                    if (is_null($value)) {
+                        $value = (new $type())->parse([]);
+                    }
+
                     if (!is_null($value)) {
                         $value = (new $type())->generate($value);
                     }
@@ -93,7 +97,11 @@ class Entity
      */
     public function generate($entities)
     {
-        if (!$this->isAssoc($entities)) {
+        if (is_object($entities)) {
+            return $entities;
+        }
+
+        if (is_array($entities) && !$this->isAssoc($entities)) {
             $data = [];
             foreach ($entities as $entity) {
                 $data[] = (new static())->parse($entity);
