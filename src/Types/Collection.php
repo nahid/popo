@@ -7,11 +7,22 @@ class Collection extends Type
     protected $name = 'collection';
     protected $default = [];
 
+    /**
+     * check this given value is collection type
+     * @param $var
+     * @return bool
+     */
     public function is($var) : bool
     {
         return $this->isCollection($var);
     }
 
+    /**
+     * Check the given value is a collection
+     *
+     * @param array $arr
+     * @return bool
+     */
     private function isCollection(array $arr) : bool
     {
         if (array() === $arr) return false;

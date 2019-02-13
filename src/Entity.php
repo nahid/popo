@@ -22,6 +22,8 @@ class Entity
     }
 
     /**
+     * migrate data with class properties
+     *
      * @param $data
      * @return $this
      * @throws TypeMismatchException
@@ -82,6 +84,13 @@ class Entity
         return $this;
     }
 
+    /**
+     * Generate data to parse POPO compatible
+     *
+     * @param $entities
+     * @return array|Entity
+     * @throws TypeMismatchException
+     */
     public function generate($entities)
     {
         if (!$this->isAssoc($entities)) {
@@ -96,6 +105,12 @@ class Entity
         return $this->parse($entities);
     }
 
+    /**
+     * Make given text as camelCase
+     *
+     * @param string $string
+     * @return string
+     */
     protected function toCamelCase(string $string) : string
     {
         $words = explode('_', $string);
@@ -113,6 +128,12 @@ class Entity
         return $camelCase;
     }
 
+    /**
+     * Make given text as under_score
+     *
+     * @param string $string
+     * @return string
+     */
     protected function toUnderscore(string $string) : string
     {
         preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $string, $matches);
@@ -123,6 +144,12 @@ class Entity
         return implode('_', $ret);
     }
 
+    /**
+     * Check is given value is associative array
+     *
+     * @param $arr
+     * @return bool
+     */
     protected function isAssoc($arr) : bool
     {
         if (!is_array($arr)) return false;

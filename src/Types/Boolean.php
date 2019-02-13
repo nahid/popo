@@ -7,6 +7,12 @@ class Boolean extends Type
     protected $name = 'boolean';
     protected $default = false;
 
+    /**
+     * check this given value is boolean type
+     *
+     * @param $var
+     * @return bool
+     */
     public function is($var) : bool
     {
         return is_bool($var);

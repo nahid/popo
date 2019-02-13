@@ -8,13 +8,25 @@ use Exception;
 class Date extends Type
 {
     protected $name = 'date';
-    protected $default = [];
+    protected $default = null;
 
+    /**
+     * check this given value is date type
+     *
+     * @param $var
+     * @return bool
+     */
     public function is($var) : bool
     {
         return $this->isDate($var);
     }
 
+    /**
+     * check this value is a valid date
+     *
+     * @param $date
+     * @return bool
+     */
     private function isDate( $date ) : bool
     {
         try {
