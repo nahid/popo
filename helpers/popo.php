@@ -33,8 +33,8 @@ if (!function_exists('popo_enity')) {
             throw new \Nahid\Popo\Exceptions\UnknownEntityException(vsprintf("Unknown entity exception. %s should be inherited from Entity::class.", [$entity]));
         }
 
-        $entity_obj = new $entity($data);
+        $entity_obj = new $entity();
 
-        return $entity_obj;
+        return $entity_obj->generate($data);
     }
 }
