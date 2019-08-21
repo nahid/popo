@@ -1,36 +1,51 @@
 <?php
 
-use Nahid\Popo\Entity;
+use Nahid\Popo\Struct;
 
 
-if (!function_exists('popo_json_parse')) {
-    function popo_json_parse(string $json, string $entity)
+if (!function_exists('popo_json_struct')) {
+    /**
+     * @param string $json
+     * @param string $struct
+     * @return array|Struct
+     * @throws ReflectionException
+     * @throws \Nahid\Popo\Exceptions\TypeMismatchException
+     * @throws \Nahid\Popo\Exceptions\UnknownStructException
+     */
+    function popo_json_struct(string $json, string $struct)
     {
-        $ref_class = new ReflectionClass($entity);
+        $ref_class = new ReflectionClass($struct);
 
-        if (!$ref_class->isSubclassOf(Entity::class)) {
-            throw new \Nahid\Popo\Exceptions\UnknownEntityException(vsprintf("Unknown entity exception. %s should be inherited from Entity::class.", [$entity]));
+        if (!$ref_class->isSubclassOf(Struct::class)) {
+            throw new \Nahid\Popo\Exceptions\UnknownStructException(vsprintf("Unknown struct exception. %s should be inherited from Entity::class.", [$struct]));
         }
 
         $json_array = json_decode($json, true);
 
         /**
-         * @var Entity $entity_obj
+         * @var Struct $struct_obj
          */
-        $entity_obj = new $entity();
+        $struct_obj = $ref_class->newInstance();
 
-        return $entity_obj->generate($json_array);
+        return $struct_obj->generate($json_array);
     }
 }
 
 
-if (!function_exists('popo_enity')) {
-    function popo_enity(array $data, string $entity)
+if (!function_exists('popo_struct')) {
+    /**
+     * @param array $data
+     * @param string $entity
+     * @return mixed
+     * @throws ReflectionException
+     * @throws \Nahid\Popo\Exceptions\UnknownStructException
+     */
+    function popo_struct(array $data, string $entity)
     {
         $ref_class = new ReflectionClass($entity);
 
-        if (!$ref_class->isSubclassOf(Entity::class)) {
-            throw new \Nahid\Popo\Exceptions\UnknownEntityException(vsprintf("Unknown entity exception. %s should be inherited from Entity::class.", [$entity]));
+        if (!$ref_class->isSubclassOf(Struct::class)) {
+            throw new \Nahid\Popo\Exceptions\UnknownStructException(vsprintf("Unknown entity exception. %s should be inherited from Entity::class.", [$entity]));
         }
 
         $entity_obj = new $entity();

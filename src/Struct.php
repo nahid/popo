@@ -5,7 +5,7 @@ namespace Nahid\Popo;
 use Nahid\Popo\Exceptions\TypeMismatchException;
 use Nahid\Popo\Types\Type;
 
-class Entity
+class Struct
 {
     /**
      * @var \ReflectionClass
@@ -28,7 +28,7 @@ class Entity
      * @return $this
      * @throws TypeMismatchException
      */
-    public function parse($data) : Entity
+    public function parse($data) : Struct
     {
 
         $props = $this->_class->getProperties(\ReflectionProperty::IS_PUBLIC);
@@ -65,7 +65,7 @@ class Entity
                     //$value = $typeInstance->generate($value);
                 }
 
-                if ($obj->isSubclassOf(Entity::class)) {
+                if ($obj->isSubclassOf(Struct::class)) {
                     if (is_null($value)) {
                         $value = (new $type())->parse([]);
                     }
@@ -92,7 +92,7 @@ class Entity
      * Generate data to parse POPO compatible
      *
      * @param $entities
-     * @return array|Entity
+     * @return array|Struct
      * @throws TypeMismatchException
      */
     public function generate($entities)
@@ -103,8 +103,8 @@ class Entity
 
         if (is_array($entities) && !$this->isAssoc($entities)) {
             $data = [];
-            foreach ($entities as $entity) {
-                $data[] = (new static())->parse($entity);
+            foreach ($entities as $struct) {
+                $data[] = (new static())->parse($struct);
             }
 
             return $data;
